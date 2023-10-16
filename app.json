@@ -1,0 +1,39 @@
+{
+  "id": "07b33421-b3f4-4130-a951-6ce4c5bf1cf4",
+  "name": "bc2adls Environment Hub",
+  "publisher": "The bc2adls team",
+  "version": "1.0.0.0",
+  "brief": "",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [
+    {
+      "publisher": "The bc2adls team",
+      "name": "Azure Data Lake Storage Export",
+      "id": "1688530c-452c-4b06-8947-ab4bf5b26053",
+      "version": "2.13.0.0"
+    } 
+  ],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "23.0.0.0",
+  "idRanges": [
+    {
+      "from": 50100,
+      "to": 50149
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true
+  },
+  "runtime": "12.0",
+  "features": [
+    "NoImplicitWith"
+  ]
+}
