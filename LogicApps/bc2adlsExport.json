@@ -1,0 +1,120 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "For_each_enivorment": {
+                "actions": {
+                    "Get_adls_Setup": {
+                        "inputs": {
+                            "host": {
+                                "connection": {
+                                    "name": "@parameters('$connections')['dynamicssmbsaas']['connectionId']"
+                                }
+                            },
+                            "method": "get",
+                            "path": "/v3/bcenvironments/@{encodeURIComponent(encodeURIComponent(items('For_each_enivorment')?['environmentName']))}/companies/@{encodeURIComponent(encodeURIComponent(first(body('List_companies_(V3)')?['value'])?['Id']))}/datasets/@{encodeURIComponent(encodeURIComponent('bc2adlsTeamMicrosoft/bc2adls/v1.1'))}/tables/@{encodeURIComponent(encodeURIComponent('adlseSetup'))}/items"
+                        },
+                        "runAfter": {
+                            "List_companies_(V3)": [
+                                "Succeeded"
+                            ]
+                        },
+                        "type": "ApiConnection"
+                    },
+                    "List_companies_(V3)": {
+                        "inputs": {
+                            "host": {
+                                "connection": {
+                                    "name": "@parameters('$connections')['dynamicssmbsaas']['connectionId']"
+                                }
+                            },
+                            "method": "get",
+                            "path": "/v3/bcenvironments/@{encodeURIComponent(encodeURIComponent(items('For_each_enivorment')?['environmentName']))}/companies"
+                        },
+                        "runAfter": {},
+                        "type": "ApiConnection"
+                    },
+                    "Run_action_(V3)_2": {
+                        "inputs": {
+                            "body": {
+                                "systemId": "@first(body('Get_adls_Setup')?['value'])?['systemId']"
+                            },
+                            "host": {
+                                "connection": {
+                                    "name": "@parameters('$connections')['dynamicssmbsaas']['connectionId']"
+                                }
+                            },
+                            "method": "post",
+                            "path": "/v3/bcenvironments/@{encodeURIComponent(encodeURIComponent(items('For_each_enivorment')?['environmentName']))}/companies/@{encodeURIComponent(encodeURIComponent(first(body('List_companies_(V3)')?['value'])?['Id']))}/datasets/@{encodeURIComponent(encodeURIComponent('bc2adlsTeamMicrosoft/bc2adls/v1.1'))}/procedures/@{encodeURIComponent(encodeURIComponent('adlseSetup-startExport'))}"
+                        },
+                        "runAfter": {
+                            "Get_adls_Setup": [
+                                "Succeeded"
+                            ]
+                        },
+                        "type": "ApiConnection"
+                    }
+                },
+                "foreach": "@body('Get_all_enviroments')?['value']",
+                "runAfter": {
+                    "Get_all_enviroments": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Foreach"
+            },
+            "Get_all_enviroments": {
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['dynamicssmbsaas']['connectionId']"
+                        }
+                    },
+                    "method": "get",
+                    "path": "/v3/bcenvironments/@{encodeURIComponent(encodeURIComponent('BCPT'))}/companies/@{encodeURIComponent(encodeURIComponent('fbb8c514-55e9-ed11-884e-6045bdc8c015'))}/datasets/@{encodeURIComponent(encodeURIComponent('envhub/envhub/v1.0'))}/tables/@{encodeURIComponent(encodeURIComponent('environments'))}/items"
+                },
+                "runAfter": {},
+                "type": "ApiConnection"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "parameters": {
+            "$connections": {
+                "defaultValue": {},
+                "type": "Object"
+            }
+        },
+        "triggers": {
+            "When_a_business_event_occurs_(V3)": {
+                "inputs": {
+                    "body": {
+                        "NotificationUrl": "@{listCallbackUrl()}"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['dynamicssmbsaas']['connectionId']"
+                        }
+                    },
+                    "path": "/v3/bcenvironments/@{encodeURIComponent(encodeURIComponent('BCPT'))}/businessevents/@{encodeURIComponent(encodeURIComponent('OnExport(1688530c-452c-4b06-8947-ab4bf5b26053)'))}/subscriptions",
+                    "queries": {
+                        "company": "fbb8c514-55e9-ed11-884e-6045bdc8c015"
+                    }
+                },
+                "splitOn": "@triggerBody()?['value']",
+                "type": "ApiConnectionWebhook"
+            }
+        }
+    },
+    "parameters": {
+        "$connections": {
+            "value": {
+                "dynamicssmbsaas": {
+                    "connectionId": "/subscriptions/f5880164-7c89-4117-a79f-a0c4e4f31f98/resourceGroups/D356/providers/Microsoft.Web/connections/dynamicssmbsaas",
+                    "connectionName": "dynamicssmbsaas",
+                    "id": "/subscriptions/f5880164-7c89-4117-a79f-a0c4e4f31f98/providers/Microsoft.Web/locations/westeurope/managedApis/dynamicssmbsaas"
+                }
+            }
+        }
+    }
+}

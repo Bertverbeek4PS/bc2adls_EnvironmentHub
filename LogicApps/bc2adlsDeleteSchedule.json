@@ -1,0 +1,188 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "For_each": {
+                "actions": {
+                    "Delete_Job_queue": {
+                        "inputs": {
+                            "headers": {
+                                "Authorization": "Bearer @{body('Parse_Response')?['access_token']}"
+                            },
+                            "method": "POST",
+                            "uri": "https://api.businesscentral.dynamics.com/v2.0/@{variables('tenantid')}/@{items('For_each')?['environmentName']}/ODataV4/EnvironmentHub_DeleteScheduleMultiExport?company=@{items('For_each')?['companyGuid']}"
+                        },
+                        "runAfter": {
+                            "Parse_Response": [
+                                "Succeeded"
+                            ]
+                        },
+                        "type": "Http"
+                    },
+                    "Parse_Response": {
+                        "inputs": {
+                            "content": "@body('Request_Token')",
+                            "schema": {
+                                "properties": {
+                                    "access_token": {
+                                        "type": "string"
+                                    },
+                                    "expires_in": {
+                                        "type": "string"
+                                    },
+                                    "expires_on": {
+                                        "type": "string"
+                                    },
+                                    "ext_expires_in": {
+                                        "type": "string"
+                                    },
+                                    "not_before": {
+                                        "type": "string"
+                                    },
+                                    "resource": {
+                                        "type": "string"
+                                    },
+                                    "token_type": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "runAfter": {
+                            "Request_Token": [
+                                "Succeeded"
+                            ]
+                        },
+                        "type": "ParseJson"
+                    },
+                    "Request_Token": {
+                        "inputs": {
+                            "body": "client_id=@{variables('clientid')}&client_secret=@{variables('clientsecret')}&resource=https://api.businesscentral.dynamics.com&grant_type=client_credentials",
+                            "headers": {
+                                "Content-type": "application/x-www-form-urlencoded"
+                            },
+                            "method": "POST",
+                            "uri": "https://login.windows.net/@{variables('tenantid')}/oauth2/token "
+                        },
+                        "runAfter": {},
+                        "type": "Http"
+                    }
+                },
+                "foreach": "@body('Get_Environments_and_companies')?['value']",
+                "runAfter": {
+                    "Get_Environments_and_companies": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Foreach"
+            },
+            "Get_Environments_and_companies": {
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['dynamicssmbsaas']['connectionId']"
+                        }
+                    },
+                    "method": "get",
+                    "path": "/v3/bcenvironments/@{encodeURIComponent(encodeURIComponent('BCPT'))}/companies/@{encodeURIComponent(encodeURIComponent('fbb8c514-55e9-ed11-884e-6045bdc8c015'))}/datasets/@{encodeURIComponent(encodeURIComponent('envhub/envhub/v1.0'))}/tables/@{encodeURIComponent(encodeURIComponent('envCompanies'))}/items",
+                    "queries": {
+                        "$filter": "enabled eq true"
+                    }
+                },
+                "runAfter": {
+                    "Initialize_variable": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Initialize_variable": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "tenantid",
+                            "type": "string",
+                            "value": "<Your Tenant ID>"
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Set_Client_Secret": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "InitializeVariable"
+            },
+            "Set_Client_Id": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "clientid",
+                            "type": "string",
+                            "value": "<Your Client ID>"
+                        }
+                    ]
+                },
+                "runAfter": {},
+                "type": "InitializeVariable"
+            },
+            "Set_Client_Secret": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "clientsecret",
+                            "type": "string",
+                            "value": "<Your Client Secret>"
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Set_Client_Id": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "InitializeVariable"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "parameters": {
+            "$connections": {
+                "defaultValue": {},
+                "type": "Object"
+            }
+        },
+        "triggers": {
+            "When_a_business_event_occurs_(V3)": {
+                "inputs": {
+                    "body": {
+                        "NotificationUrl": "@{listCallbackUrl()}"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['dynamicssmbsaas']['connectionId']"
+                        }
+                    },
+                    "path": "/v3/bcenvironments/@{encodeURIComponent(encodeURIComponent('BCPT'))}/businessevents/@{encodeURIComponent(encodeURIComponent('DeleteSchedule(07b33421-b3f4-4130-a951-6ce4c5bf1cf4)'))}/subscriptions",
+                    "queries": {
+                        "company": "fbb8c514-55e9-ed11-884e-6045bdc8c015"
+                    }
+                },
+                "splitOn": "@triggerBody()?['value']",
+                "type": "ApiConnectionWebhook"
+            }
+        }
+    },
+    "parameters": {
+        "$connections": {
+            "value": {
+                "dynamicssmbsaas": {
+                    "connectionId": "/subscriptions/f5880164-7c89-4117-a79f-a0c4e4f31f98/resourceGroups/D356/providers/Microsoft.Web/connections/dynamicssmbsaas",
+                    "connectionName": "dynamicssmbsaas",
+                    "id": "/subscriptions/f5880164-7c89-4117-a79f-a0c4e4f31f98/providers/Microsoft.Web/locations/westeurope/managedApis/dynamicssmbsaas"
+                }
+            }
+        }
+    }
+}
