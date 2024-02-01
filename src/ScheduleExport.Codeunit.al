@@ -66,22 +66,23 @@ codeunit 50100 "ENVHUB Schedule Export"
         Sunday: Boolean;
         TimeToRun: DateTime;
         MinBetweenRuns: Integer;
-        MinutesOutOfSync: Integer)
+        MinutesOutOfSync: Integer;
+        Environment: Text[250])
     begin
-        MyBusinessScheduleExport(RecurringJob, Monday, Tuesday, Wednesday, Thursdays, Friday, Saturday, Sunday, TimeToRun, MinBetweenRuns, MinutesOutOfSync);
+        MyBusinessScheduleExport(RecurringJob, Monday, Tuesday, Wednesday, Thursdays, Friday, Saturday, Sunday, TimeToRun, MinBetweenRuns, MinutesOutOfSync, Environment);
     end;
 
-    procedure DeleteSchedule()
+    procedure DeleteSchedule(Environment: Text[250])
     var
         Url: Text[250];
         WebClientUrl: Text[250];
         ADLSEFieldApiUrlTok: Label 'envhub/envhub/v1.0/companies(%1)/envCompanies(%2)', Locked = true;
     begin
-        MyBusinessDeleteSchedule();
+        MyBusinessDeleteSchedule(Environment);
     end;
 
     [ExternalBusinessEvent('DeleteSchedule', 'Delete job queue', 'Deletion of all Job Queues', EventCategory::ADLSE)]
-    local procedure MyBusinessDeleteSchedule()
+    local procedure MyBusinessDeleteSchedule(Environment: Text[250])
     begin
     end;
 
@@ -96,7 +97,8 @@ codeunit 50100 "ENVHUB Schedule Export"
         Sunday: Boolean;
         TimeToRun: DateTime;
         MinBetweenRuns: Integer;
-        MinutesOutOfSync: Integer)
+        MinutesOutOfSync: Integer;
+        Environment: Text[250])
     begin
     end;
 }

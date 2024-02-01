@@ -14,6 +14,28 @@ page 50105 "ANVHUB Schedule Export"
         {
             group("Schedule")
             {
+                group(Filtering)
+                {
+                    field(Environment; Environment)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Environment';
+                        Tooltip = 'Select the environment to schedule the job for.';
+                        Lookup = true;
+                        LookupPageId = "ENVHUB Environment";
+                        TableRelation = "ENVHUB Environment"."Environment Name";
+                    }
+
+                    // field(Company; Company)
+                    // {
+                    //     ApplicationArea = All;
+                    //     Caption = 'Company';
+                    //     Tooltip = 'Select the Company to schedule the job for.';
+                    //     Lookup = true;
+                    //     LookupPageId = "ENVHUB Environment Companies";
+                    //     TableRelation = "ENVHUB Environment Company"."Company Name";
+                    // }
+                }
                 group("Time")
                 {
                     field(TimeToRun; TimeToRun)
@@ -134,7 +156,8 @@ page 50105 "ANVHUB Schedule Export"
                         RunOnSunday,
                         TimeToRun,
                         MinutesBetweenRuns,
-                        MinutesOutOfSync);
+                        MinutesOutOfSync,
+                        Environment);
                     Message('One or more jobs are scheduled for the selected companies');
                 end;
             }
@@ -153,7 +176,7 @@ page 50105 "ANVHUB Schedule Export"
                 var
                     ADLSESchedule: Codeunit "ENVHUB Schedule Export";
                 begin
-                    ADLSESchedule.DeleteSchedule();
+                    ADLSESchedule.DeleteSchedule(Environment);
                     Message('Deleted scheduled jobs for all companies');
                 end;
             }
@@ -188,4 +211,6 @@ page 50105 "ANVHUB Schedule Export"
         TimeToRun: DateTime;
         MinutesBetweenRuns: Integer;
         MinutesOutOfSync: Integer;
+        Environment: Text;
+        Company: Text;
 }

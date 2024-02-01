@@ -2,6 +2,46 @@
     "definition": {
         "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
         "actions": {
+            "Condition": {
+                "actions": {
+                    "Set_variable": {
+                        "inputs": {
+                            "name": "filterString",
+                            "value": "enabled eq true"
+                        },
+                        "runAfter": {},
+                        "type": "SetVariable"
+                    }
+                },
+                "else": {
+                    "actions": {
+                        "Set_variable_2": {
+                            "inputs": {
+                                "name": "filterString",
+                                "value": "enabled eq true AND 'Environment Name' eq '@{triggerBody()?['$environmentName']}'"
+                            },
+                            "runAfter": {},
+                            "type": "SetVariable"
+                        }
+                    }
+                },
+                "expression": {
+                    "and": [
+                        {
+                            "equals": [
+                                "@triggerBody()?['$environmentName']",
+                                "''"
+                            ]
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Initialize_variable_2": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "If"
+            },
             "For_each": {
                 "actions": {
                     "Delete_Job_queue": {
@@ -85,13 +125,13 @@
                         }
                     },
                     "method": "get",
-                    "path": "/v3/bcenvironments/@{encodeURIComponent(encodeURIComponent('BCPT'))}/companies/@{encodeURIComponent(encodeURIComponent('fbb8c514-55e9-ed11-884e-6045bdc8c015'))}/datasets/@{encodeURIComponent(encodeURIComponent('envhub/envhub/v1.0'))}/tables/@{encodeURIComponent(encodeURIComponent('envCompanies'))}/items",
+                    "path": "/v3/bcenvironments/@{encodeURIComponent(encodeURIComponent('NL'))}/companies/@{encodeURIComponent(encodeURIComponent('35b6512c-5277-ee11-817e-6045bde98c0f'))}/datasets/@{encodeURIComponent(encodeURIComponent('envhub/envhub/v1.0'))}/tables/@{encodeURIComponent(encodeURIComponent('envCompanies'))}/items",
                     "queries": {
-                        "$filter": "enabled eq true"
+                        "$filter": "@variables('filterString')"
                     }
                 },
                 "runAfter": {
-                    "Initialize_variable": [
+                    "Condition": [
                         "Succeeded"
                     ]
                 },
@@ -109,6 +149,22 @@
                 },
                 "runAfter": {
                     "Set_Client_Secret": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "InitializeVariable"
+            },
+            "Initialize_variable_2": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "filterString",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Initialize_variable": [
                         "Succeeded"
                     ]
                 },
@@ -164,9 +220,9 @@
                             "name": "@parameters('$connections')['dynamicssmbsaas']['connectionId']"
                         }
                     },
-                    "path": "/v3/bcenvironments/@{encodeURIComponent(encodeURIComponent('BCPT'))}/businessevents/@{encodeURIComponent(encodeURIComponent('DeleteSchedule(07b33421-b3f4-4130-a951-6ce4c5bf1cf4)'))}/subscriptions",
+                    "path": "/v3/bcenvironments/@{encodeURIComponent(encodeURIComponent('NL'))}/businessevents/@{encodeURIComponent(encodeURIComponent('DeleteSchedule(07b33421-b3f4-4130-a951-6ce4c5bf1cf4)'))}/subscriptions",
                     "queries": {
-                        "company": "fbb8c514-55e9-ed11-884e-6045bdc8c015"
+                        "company": "35b6512c-5277-ee11-817e-6045bde98c0f"
                     }
                 },
                 "splitOn": "@triggerBody()?['value']",
@@ -178,9 +234,9 @@
         "$connections": {
             "value": {
                 "dynamicssmbsaas": {
-                    "connectionId": "/subscriptions/f5880164-7c89-4117-a79f-a0c4e4f31f98/resourceGroups/D356/providers/Microsoft.Web/connections/dynamicssmbsaas",
+                    "connectionId": "/subscriptions/8bd7f071-400a-438c-bd1e-94132881f7c3/resourceGroups/BertVerbeek/providers/Microsoft.Web/connections/dynamicssmbsaas",
                     "connectionName": "dynamicssmbsaas",
-                    "id": "/subscriptions/f5880164-7c89-4117-a79f-a0c4e4f31f98/providers/Microsoft.Web/locations/westeurope/managedApis/dynamicssmbsaas"
+                    "id": "/subscriptions/8bd7f071-400a-438c-bd1e-94132881f7c3/providers/Microsoft.Web/locations/westeurope/managedApis/dynamicssmbsaas"
                 }
             }
         }
