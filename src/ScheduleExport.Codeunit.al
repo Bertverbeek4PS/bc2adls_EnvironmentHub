@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 codeunit 50100 "ENVHUB Schedule Export"
 {
+    [ServiceEnabled]
     procedure CreateJobQueueEntry(
         RecurringJob: Boolean;
         Monday: Boolean;

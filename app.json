@@ -2,7 +2,7 @@
   "id": "07b33421-b3f4-4130-a951-6ce4c5bf1cf4",
   "name": "bc2adls Environment Hub",
   "publisher": "The bc2adls team",
-  "version": "3.0.0.1",
+  "version": "3.0.0.3",
   "brief": "",
   "description": "",
   "privacyStatement": "",
@@ -20,7 +20,7 @@
   ],
   "screenshots": [],
   "platform": "1.0.0.0",
-  "application": "22.0.0.0",
+  "application": "23.0.0.0",
   "idRanges": [
     {
       "from": 50100,
@@ -32,7 +32,7 @@
     "allowDownloadingSource": true,
     "includeSourceInSymbolFile": true
   },
-  "runtime": "11.0",
+  "runtime": "12.0",
   "features": [
     "NoImplicitWith"
   ]
