@@ -12,7 +12,13 @@ codeunit 50100 "ENVHUB Schedule Export"
         Friday: Boolean;
         Saturday: Boolean;
         Sunday: Boolean;
-        MinBetweenRuns: Integer)
+        MinBetweenRuns: Integer;
+        MaximumNoofAttemptstoRun: Integer;
+        RerunDelay: Integer;
+        DelayByRunAgain: Integer;
+        InactivityTimeoutPeriod: Integer;
+        StartingTime: Time;
+        EndingTime: Time)
     var
         JobQueueEntry: Record "Job Queue Entry";
         JobQueueCategory: Record "Job Queue Category";
@@ -28,6 +34,11 @@ codeunit 50100 "ENVHUB Schedule Export"
         JobQueueEntry.Insert(true);
         JobQueueEntry.Description := JobQueueCategory.Description;
         JobQueueEntry."Recurring Job" := RecurringJob;
+        JobQueueEntry."Maximum No. of Attempts to Run" := MaximumNoofAttemptstoRun;
+        JobQueueEntry."Rerun Delay (sec.)" := RerunDelay;
+        JobQueueEntry."Starting Time" := StartingTime;
+        JobQueueEntry."Ending Time" := EndingTime;
+        JobQueueEntry."Inactivity Timeout Period" := InactivityTimeoutPeriod;
         if RecurringJob then begin
             JobQueueEntry."Run on Mondays" := Monday;
             JobQueueEntry."Run on Tuesdays" := Tuesday;
@@ -68,9 +79,32 @@ codeunit 50100 "ENVHUB Schedule Export"
         TimeToRun: DateTime;
         MinBetweenRuns: Integer;
         MinutesOutOfSync: Integer;
-        Environment: Text[250])
+        Environment: Text[250];
+        MaximumNoofAttemptstoRun: Integer;
+        RerunDelay: Integer;
+        DelayByRunAgain: Integer;
+        InactivityTimeoutPeriod: Integer;
+        StartingTime: Time;
+        EndingTime: Time)
     begin
-        MyBusinessScheduleExport(RecurringJob, Monday, Tuesday, Wednesday, Thursdays, Friday, Saturday, Sunday, TimeToRun, MinBetweenRuns, MinutesOutOfSync, Environment);
+        MyBusinessScheduleExport(RecurringJob,
+                                Monday,
+                                Tuesday,
+                                Wednesday,
+                                Thursdays,
+                                Friday,
+                                Saturday,
+                                Sunday,
+                                TimeToRun,
+                                MinBetweenRuns,
+                                MinutesOutOfSync,
+                                Environment,
+                                MaximumNoofAttemptstoRun,
+                                RerunDelay,
+                                DelayByRunAgain,
+                                InactivityTimeoutPeriod,
+                                StartingTime,
+                                EndingTime);
     end;
 
     procedure DeleteSchedule(Environment: Text[250])
@@ -99,7 +133,13 @@ codeunit 50100 "ENVHUB Schedule Export"
         TimeToRun: DateTime;
         MinBetweenRuns: Integer;
         MinutesOutOfSync: Integer;
-        Environment: Text[250])
+        Environment: Text[250];
+        MaximumNoofAttemptstoRun: Integer;
+        RerunDelay: Integer;
+        DelayByRunAgain: Integer;
+        InactivityTimeoutPeriod: Integer;
+        StartingTime: Time;
+        EndingTime: Time)
     begin
     end;
 }

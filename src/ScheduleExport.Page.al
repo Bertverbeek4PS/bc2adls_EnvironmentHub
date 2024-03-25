@@ -75,6 +75,42 @@ page 50105 "ANVHUB Schedule Export"
                         Caption = 'Minutes out of sync';
                         Tooltip = 'A maximum of 3 job queues can be scheduled at the same time. When there are more then 3 companies in an environment, it''s not possible to schedule all companies directly. This is the time in minutes between scheduling batches of jobs.';
                     }
+                    field("MaximumNoofAttemptstoRun"; MaximumNoofAttemptstoRun)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Maximum No of Attempts to Run';
+                    }
+                    field("RerunDelay"; RerunDelay)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Rerun Delay (sec.)';
+                    }
+
+                    field("DelayByRunAgain"; DelayByRunAgain)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Delay By Run Again';
+                    }
+                    field("InactivityTimeoutPeriod"; InactivityTimeoutPeriod)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Inactivity Time-out Period';
+                    }
+                    field("JobTimeout"; JobTimeout)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Job Time out';
+                    }
+                    field("StartingTime"; StartingTime)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Starting Time';
+                    }
+                    field("EndingTime"; EndingTime)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Ending Time';
+                    }
                 }
                 group(When)
                 {
@@ -157,7 +193,13 @@ page 50105 "ANVHUB Schedule Export"
                         TimeToRun,
                         MinutesBetweenRuns,
                         MinutesOutOfSync,
-                        Environment);
+                        Environment,
+                        MaximumNoofAttemptstoRun,
+                        RerunDelay,
+                        DelayByRunAgain,
+                        InactivityTimeoutPeriod,
+                        StartingTime,
+                        EndingTime);
                     Message('One or more jobs are scheduled for the selected companies');
                 end;
             }
@@ -211,6 +253,13 @@ page 50105 "ANVHUB Schedule Export"
         TimeToRun: DateTime;
         MinutesBetweenRuns: Integer;
         MinutesOutOfSync: Integer;
+        MaximumNoofAttemptstoRun: Integer;
+        RerunDelay: Integer;
+        DelayByRunAgain: Integer;
+        InactivityTimeoutPeriod: Integer;
+        JobTimeout: Duration;
+        StartingTime: Time;
+        EndingTime: Time;
         Environment: Text;
         Company: Text;
 }
