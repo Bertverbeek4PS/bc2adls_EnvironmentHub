@@ -39,6 +39,7 @@ codeunit 50100 "ENVHUB Schedule Export"
         JobQueueEntry."Starting Time" := StartingTime;
         JobQueueEntry."Ending Time" := EndingTime;
         JobQueueEntry."Inactivity Timeout Period" := InactivityTimeoutPeriod;
+        JobQueueEntry.Scheduled := true;
         if RecurringJob then begin
             JobQueueEntry."Run on Mondays" := Monday;
             JobQueueEntry."Run on Tuesdays" := Tuesday;
