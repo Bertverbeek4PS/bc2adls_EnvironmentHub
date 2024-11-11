@@ -15,4 +15,12 @@ table 50100 "ENVHUB Environment"
             Clustered = true;
         }
     }
+
+    trigger OnDelete()
+    var
+        ENVHUBEnvironmentCompany: Record "ENVHUB Environment Company";
+    begin
+        ENVHUBEnvironmentCompany.SetRange("Environment Name", rec."Environment Name");
+        ENVHUBEnvironmentCompany.DeleteAll();
+    end;
 }
