@@ -17,6 +17,10 @@ table 50102 "ENVHUB Setup"
         {
             Caption = 'Redirect URL';
         }
+        field(4; "Base URL"; Text[250])
+        {
+            Caption = 'Base URL';
+        }
     }
     keys
     {

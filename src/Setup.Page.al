@@ -17,6 +17,7 @@ page 50102 "ENVHUB Setup"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the tenant ID where the enviroment is located.';
+                    Visible = SaaSEnvironment;
                 }
                 field("Client ID"; ClientID)
                 {
@@ -46,6 +47,12 @@ page 50102 "ENVHUB Setup"
                     ToolTip = 'Specifies the redirect URL of the application that will be used to the Business Central integration.';
 
                 }
+                field(BaseUrl; rec."Base URL")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the redirect base URL api of the application that will be used to the Business Central integration. Like https://nav.contoso.com:7048/bc/api/v2.0/v1.0/companies.';
+                    Visible = not SaaSEnvironment;
+                }
             }
         }
     }
@@ -56,6 +63,8 @@ page 50102 "ENVHUB Setup"
         [NonDebuggable]
         ClientSecret: Text;
         Credentials: Codeunit "ENVHUB Credentials";
+        EnvironmentInformation: Codeunit "Environment Information";
+        SaaSEnvironment: Boolean;
 
     trigger OnOpenPage()
     begin
@@ -68,6 +77,7 @@ page 50102 "ENVHUB Setup"
             ClientID := Credentials.GetClientID();
             ClientSecret := Credentials.GetClientSecret();
         end;
+        SaaSEnvironment := EnvironmentInformation.IsSaaS();
     end;
 
     local procedure InitializeDefaultRedirectUrl()

@@ -43,10 +43,14 @@ codeunit 50103 "ENVHUB Communication"
     var
         ENVHUBSetup: Record "ENVHUB Setup";
         ENVHUBHttp: Codeunit "ENVHUB Http";
+        EnvironmentInformation: Codeunit "Environment Information";
         Method: Option Get,Post,Patch;
         UrlLbl: Label 'https://api.businesscentral.dynamics.com/v2.0/%1/%2/api/v1.0/companies', comment = '%1 = Tenant ID, %2 = Environment name';
     begin
         if ENVHUBSetup.Get() then;
-        exit(ENVHUBHttp.RequestMessage(StrSubstNo(UrlLbl, ENVHUBSetup."Tenant ID", environmentName), Method::Get, ''));
+        if EnvironmentInformation.IsSaaS() then
+            exit(ENVHUBHttp.RequestMessage(StrSubstNo(UrlLbl, ENVHUBSetup."Tenant ID", environmentName), Method::Get, ''))
+        else
+            exit(ENVHUBHttp.RequestMessage(StrSubstNo(ENVHUBSetup."Base URL"), Method::Get, '')); //Change of baseUrl
     end;
 }
