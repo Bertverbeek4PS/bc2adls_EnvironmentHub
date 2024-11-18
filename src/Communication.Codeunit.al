@@ -51,7 +51,7 @@ codeunit 50103 "ENVHUB Communication"
         if ENVHUBSetup.Get() then;
         if EnvironmentInformation.IsSaaS() then begin
             exit(ENVHUBHttp.RequestMessage(StrSubstNo(saasUrlLbl, ENVHUBSetup."Tenant ID", environmentName), Method::Get, ''))
-        end else begin 
+        end else begin
             exit(ENVHUBHttp.RequestMessage(StrSubstNo(onPremUrlLbl, ENVHUBSetup."Base URL", environmentName), Method::Get, '')); //Change of baseUrl with tenant/environment name
         end;
     end;
