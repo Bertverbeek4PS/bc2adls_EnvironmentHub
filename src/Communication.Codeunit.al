@@ -49,10 +49,9 @@ codeunit 50103 "ENVHUB Communication"
         onPremUrlLbl: Label '%1/api/v1.0/companies?tenant=%2';
     begin
         if ENVHUBSetup.Get() then;
-        if EnvironmentInformation.IsSaaS() then begin
+        if EnvironmentInformation.IsSaaS() then
             exit(ENVHUBHttp.RequestMessage(StrSubstNo(saasUrlLbl, ENVHUBSetup."Tenant ID", environmentName), Method::Get, ''))
-        end else begin
+        else
             exit(ENVHUBHttp.RequestMessage(StrSubstNo(onPremUrlLbl, ENVHUBSetup."Base URL", environmentName), Method::Get, '')); //Change of baseUrl with tenant/environment name
-        end;
     end;
 }
