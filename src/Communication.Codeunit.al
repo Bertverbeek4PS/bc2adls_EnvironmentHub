@@ -52,7 +52,7 @@ codeunit 50103 "ENVHUB Communication"
         if EnvironmentInformation.IsSaaS() then begin
             baseUrl := 'https://api.businesscentral.dynamics.com/v2.0/%1/%2/api/v1.0/companies';
             exit(ENVHUBHttp.RequestMessage(StrSubstNo(baseUrl, ENVHUBSetup."Tenant ID", environmentName), Method::Get, ''))
-        end else begin 
+        end else begin
             baseUrl := ENVHUBSetup."Base URL" + '/api/v1.0/companies?tenant=%1';
             exit(ENVHUBHttp.RequestMessage(StrSubstNo(baseUrl, environmentName), Method::Get, '')); //Change of baseUrl with tenant/environment name
         end;
