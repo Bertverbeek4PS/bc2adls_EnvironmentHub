@@ -22,7 +22,6 @@ page 50102 "ENVHUB Setup"
                 field("Client ID"; ClientID)
                 {
                     ApplicationArea = All;
-                    ExtendedDatatype = Masked;
                     Tooltip = 'Specifies the application client ID for the Azure App Registration that accesses the storage account.';
 
                     trigger OnValidate()
