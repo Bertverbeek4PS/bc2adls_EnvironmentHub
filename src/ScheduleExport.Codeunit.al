@@ -52,6 +52,8 @@ codeunit 50100 "ENVHUB Schedule Export"
 
                 if (TimeToRun <> 0DT) then begin
                     JobQueueEntry."Earliest Start Date/Time" := TimeToRun;
+                end else begin
+                    JobQueueEntry."Earliest Start Date/Time" := CurrentDateTime();
                 end;
 
                 JobQueueEntry.Modify(true);
@@ -82,6 +84,8 @@ codeunit 50100 "ENVHUB Schedule Export"
 
             if (TimeToRun <> 0DT) then begin
                 JobQueueEntry."Earliest Start Date/Time" := TimeToRun;
+            end else begin
+                JobQueueEntry."Earliest Start Date/Time" := CurrentDateTime();
             end;
 
             JobQueueEntry.Modify(true);
