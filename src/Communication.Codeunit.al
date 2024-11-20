@@ -45,12 +45,13 @@ codeunit 50103 "ENVHUB Communication"
         ENVHUBHttp: Codeunit "ENVHUB Http";
         EnvironmentInformation: Codeunit "Environment Information";
         Method: Option Get,Post,Patch;
-        UrlLbl: Label 'https://api.businesscentral.dynamics.com/v2.0/%1/%2/api/v1.0/companies', comment = '%1 = Tenant ID, %2 = Environment name';
+        SaasUrlLbl: Label 'https://api.businesscentral.dynamics.com/v2.0/%1/%2/api/v1.0/companies', comment = '%1 = Tenant ID, %2 = Environment name';
+        OnPremUrlLbl: Label '%1/api/v1.0/companies?tenant=%2', comment = '%1 = Base URL, %2 = Environment name';
     begin
         if ENVHUBSetup.Get() then;
         if EnvironmentInformation.IsSaaS() then
-            exit(ENVHUBHttp.RequestMessage(StrSubstNo(UrlLbl, ENVHUBSetup."Tenant ID", environmentName), Method::Get, ''))
+            exit(ENVHUBHttp.RequestMessage(StrSubstNo(SaasUrlLbl, ENVHUBSetup."Tenant ID", environmentName), Method::Get, ''))
         else
-            exit(ENVHUBHttp.RequestMessage(StrSubstNo(ENVHUBSetup."Base URL"), Method::Get, '')); //Change of baseUrl
+            exit(ENVHUBHttp.RequestMessage(StrSubstNo(OnPremUrlLbl, ENVHUBSetup."Base URL", environmentName), Method::Get, ''));
     end;
 }

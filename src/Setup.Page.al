@@ -50,7 +50,7 @@ page 50102 "ENVHUB Setup"
                 field(BaseUrl; rec."Base URL")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the redirect base URL api of the application that will be used to the Business Central integration. Like https://nav.contoso.com:7048/bc/api/v2.0/v1.0/companies.';
+                    ToolTip = 'Specifies the redirect base URL api of the application that will be used to the Business Central integration. Like https://nav.contoso.com:7048/bc.';
                     Visible = not SaaSEnvironment;
                 }
             }
