@@ -18,7 +18,8 @@ codeunit 50100 "ENVHUB Schedule Export"
         DelayByRunAgain: Integer;
         InactivityTimeoutPeriod: Integer;
         StartingTime: Time;
-        EndingTime: Time)
+        EndingTime: Time;
+        TimeToRun: DateTime)
     var
         JobQueueEntry: Record "Job Queue Entry";
         JobQueueCategory: Record "Job Queue Category";
@@ -48,7 +49,13 @@ codeunit 50100 "ENVHUB Schedule Export"
                     JobQueueEntry."Run on Sundays" := Sunday;
                     JobQueueEntry."No. of Minutes between Runs" := MinBetweenRuns;
                 end;
-                JobQueueEntry."Earliest Start Date/Time" := CurrentDateTime();
+
+                if (TimeToRun <> 0DT) then begin
+                    JobQueueEntry."Earliest Start Date/Time" := TimeToRun;
+                end else begin
+                    JobQueueEntry."Earliest Start Date/Time" := CurrentDateTime();
+                end;
+
                 JobQueueEntry.Modify(true);
                 JobQueueEntry.SetStatus(JobQueueEntry.Status::Ready);
             end;
@@ -74,7 +81,13 @@ codeunit 50100 "ENVHUB Schedule Export"
                 JobQueueEntry."Run on Sundays" := Sunday;
                 JobQueueEntry."No. of Minutes between Runs" := MinBetweenRuns;
             end;
-            JobQueueEntry."Earliest Start Date/Time" := CurrentDateTime();
+
+            if (TimeToRun <> 0DT) then begin
+                JobQueueEntry."Earliest Start Date/Time" := TimeToRun;
+            end else begin
+                JobQueueEntry."Earliest Start Date/Time" := CurrentDateTime();
+            end;
+
             JobQueueEntry.Modify(true);
             JobQueueEntry.ScheduleTask();
         end;
