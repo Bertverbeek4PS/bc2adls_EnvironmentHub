@@ -11,7 +11,7 @@ permissionset 50100 GeneratedPermission
         codeunit "ENVHUB Credentials"=X,
         codeunit "ENVHUB Http"=X,
         codeunit "ENVHUB Schedule Export"=X,
-        page "ANVHUB Schedule Export"=X,
+        page "ENVHUB Schedule Export"=X,
         page "ENVHUB Env Companies API"=X,
         page "ENVHUB Environment"=X,
         page "ENVHUB Environment API"=X,
