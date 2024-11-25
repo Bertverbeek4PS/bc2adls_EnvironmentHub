@@ -57,7 +57,7 @@ page 50100 "ENVHUB Environment"
                 Caption = 'Schedule Export';
                 ToolTip = 'Schedule an export accross all environments.';
                 Image = TaskList;
-                RunObject = Page "ANVHUB Schedule Export";
+                RunObject = Page "ENVHUB Schedule Export";
             }
             action(Setup)
             {
