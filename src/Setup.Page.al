@@ -17,7 +17,6 @@ page 50102 "ENVHUB Setup"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the tenant ID where the enviroment is located.';
-                    Visible = SaaSEnvironment;
                 }
                 field("Client ID"; ClientID)
                 {
