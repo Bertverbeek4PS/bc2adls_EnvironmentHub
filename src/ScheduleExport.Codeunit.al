@@ -33,7 +33,7 @@ codeunit 50100 "ENVHUB Schedule Export"
             JobQueueEntry.SetRange("Object ID to Run", Codeunit::"ADLSE Execution");
             if JobQueueEntry.FindFirst() then begin
                 JobQueueEntry.SetStatus(JobQueueEntry.Status::"On Hold");
-                JobQueueEntry."Recurring Job" := RecurringJob;
+                JobQueueEntry.Validate("Recurring Job", RecurringJob);
                 JobQueueEntry."Maximum No. of Attempts to Run" := MaximumNoofAttemptstoRun;
                 JobQueueEntry."Rerun Delay (sec.)" := RerunDelay;
                 JobQueueEntry."Starting Time" := StartingTime;
@@ -50,11 +50,10 @@ codeunit 50100 "ENVHUB Schedule Export"
                     JobQueueEntry."No. of Minutes between Runs" := MinBetweenRuns;
                 end;
 
-                if (TimeToRun <> 0DT) then begin
-                    JobQueueEntry."Earliest Start Date/Time" := TimeToRun;
-                end else begin
-                    JobQueueEntry."Earliest Start Date/Time" := CurrentDateTime();
-                end;
+                if (TimeToRun <> 0DT) then
+                    JobQueueEntry.Validate("Earliest Start Date/Time", TimeToRun)
+                else
+                    JobQueueEntry.Validate("Earliest Start Date/Time", CurrentDateTime());
 
                 JobQueueEntry.Modify(true);
                 JobQueueEntry.SetStatus(JobQueueEntry.Status::Ready);
@@ -65,7 +64,7 @@ codeunit 50100 "ENVHUB Schedule Export"
             JobQueueEntry.Validate("Object ID to Run", CODEUNIT::"ADLSE Execution");
             JobQueueEntry.Insert(true);
             JobQueueEntry.Description := JobQueueCategory.Description;
-            JobQueueEntry."Recurring Job" := RecurringJob;
+            JobQueueEntry.Validate("Recurring Job", RecurringJob);
             JobQueueEntry."Maximum No. of Attempts to Run" := MaximumNoofAttemptstoRun;
             JobQueueEntry."Rerun Delay (sec.)" := RerunDelay;
             JobQueueEntry."Starting Time" := StartingTime;
@@ -82,14 +81,12 @@ codeunit 50100 "ENVHUB Schedule Export"
                 JobQueueEntry."No. of Minutes between Runs" := MinBetweenRuns;
             end;
 
-            if (TimeToRun <> 0DT) then begin
-                JobQueueEntry."Earliest Start Date/Time" := TimeToRun;
-            end else begin
-                JobQueueEntry."Earliest Start Date/Time" := CurrentDateTime();
-            end;
+            if (TimeToRun <> 0DT) then
+                JobQueueEntry.Validate("Earliest Start Date/Time", TimeToRun)
+            else
+                JobQueueEntry.Validate("Earliest Start Date/Time", CurrentDateTime());
 
             JobQueueEntry.Modify(true);
-            JobQueueEntry.ScheduleTask();
         end;
     end;
 
