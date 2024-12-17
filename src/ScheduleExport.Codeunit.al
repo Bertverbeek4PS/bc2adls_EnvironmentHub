@@ -33,20 +33,19 @@ codeunit 50100 "ENVHUB Schedule Export"
             JobQueueEntry.SetRange("Object ID to Run", Codeunit::"ADLSE Execution");
             if JobQueueEntry.FindFirst() then begin
                 JobQueueEntry.SetStatus(JobQueueEntry.Status::"On Hold");
-                JobQueueEntry.Validate("Recurring Job", RecurringJob);
                 JobQueueEntry."Maximum No. of Attempts to Run" := MaximumNoofAttemptstoRun;
                 JobQueueEntry."Rerun Delay (sec.)" := RerunDelay;
                 JobQueueEntry."Starting Time" := StartingTime;
                 JobQueueEntry."Ending Time" := EndingTime;
                 JobQueueEntry."Inactivity Timeout Period" := InactivityTimeoutPeriod;
                 if RecurringJob then begin
-                    JobQueueEntry."Run on Mondays" := Monday;
-                    JobQueueEntry."Run on Tuesdays" := Tuesday;
-                    JobQueueEntry."Run on Wednesdays" := Wednesday;
-                    JobQueueEntry."Run on Thursdays" := Thursdays;
-                    JobQueueEntry."Run on Fridays" := Friday;
-                    JobQueueEntry."Run on Saturdays" := Saturday;
-                    JobQueueEntry."Run on Sundays" := Sunday;
+                    JobQueueEntry.Validate("Run on Mondays", Monday);
+                    JobQueueEntry.Validate("Run on Tuesdays", Tuesday);
+                    JobQueueEntry.Validate("Run on Wednesdays", Wednesday);
+                    JobQueueEntry.Validate("Run on Thursdays", Thursdays);
+                    JobQueueEntry.Validate("Run on Fridays", Friday);
+                    JobQueueEntry.Validate("Run on Saturdays", Saturday);
+                    JobQueueEntry.Validate("Run on Sundays", Sunday);
                     JobQueueEntry."No. of Minutes between Runs" := MinBetweenRuns;
                 end;
 
@@ -64,20 +63,19 @@ codeunit 50100 "ENVHUB Schedule Export"
             JobQueueEntry.Validate("Object ID to Run", CODEUNIT::"ADLSE Execution");
             JobQueueEntry.Insert(true);
             JobQueueEntry.Description := JobQueueCategory.Description;
-            JobQueueEntry.Validate("Recurring Job", RecurringJob);
             JobQueueEntry."Maximum No. of Attempts to Run" := MaximumNoofAttemptstoRun;
             JobQueueEntry."Rerun Delay (sec.)" := RerunDelay;
             JobQueueEntry."Starting Time" := StartingTime;
             JobQueueEntry."Ending Time" := EndingTime;
             JobQueueEntry."Inactivity Timeout Period" := InactivityTimeoutPeriod;
             if RecurringJob then begin
-                JobQueueEntry."Run on Mondays" := Monday;
-                JobQueueEntry."Run on Tuesdays" := Tuesday;
-                JobQueueEntry."Run on Wednesdays" := Wednesday;
-                JobQueueEntry."Run on Thursdays" := Thursdays;
-                JobQueueEntry."Run on Fridays" := Friday;
-                JobQueueEntry."Run on Saturdays" := Saturday;
-                JobQueueEntry."Run on Sundays" := Sunday;
+                JobQueueEntry.Validate("Run on Mondays", Monday);
+                JobQueueEntry.Validate("Run on Tuesdays", Tuesday);
+                JobQueueEntry.Validate("Run on Wednesdays", Wednesday);
+                JobQueueEntry.Validate("Run on Thursdays", Thursdays);
+                JobQueueEntry.Validate("Run on Fridays", Friday);
+                JobQueueEntry.Validate("Run on Saturdays", Saturday);
+                JobQueueEntry.Validate("Run on Sundays", Sunday);
                 JobQueueEntry."No. of Minutes between Runs" := MinBetweenRuns;
             end;
 
