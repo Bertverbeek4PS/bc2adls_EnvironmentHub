@@ -39,6 +39,7 @@ codeunit 50100 "ENVHUB Schedule Export"
                 JobQueueEntry."Ending Time" := EndingTime;
                 JobQueueEntry."Inactivity Timeout Period" := InactivityTimeoutPeriod;
                 if RecurringJob then begin
+                    JobQueueEntry."No. of Minutes between Runs" := MinBetweenRuns;
                     JobQueueEntry.Validate("Run on Mondays", Monday);
                     JobQueueEntry.Validate("Run on Tuesdays", Tuesday);
                     JobQueueEntry.Validate("Run on Wednesdays", Wednesday);
@@ -46,7 +47,6 @@ codeunit 50100 "ENVHUB Schedule Export"
                     JobQueueEntry.Validate("Run on Fridays", Friday);
                     JobQueueEntry.Validate("Run on Saturdays", Saturday);
                     JobQueueEntry.Validate("Run on Sundays", Sunday);
-                    JobQueueEntry."No. of Minutes between Runs" := MinBetweenRuns;
                 end;
 
                 if (TimeToRun <> 0DT) then
@@ -69,6 +69,7 @@ codeunit 50100 "ENVHUB Schedule Export"
             JobQueueEntry."Ending Time" := EndingTime;
             JobQueueEntry."Inactivity Timeout Period" := InactivityTimeoutPeriod;
             if RecurringJob then begin
+                JobQueueEntry."No. of Minutes between Runs" := MinBetweenRuns;
                 JobQueueEntry.Validate("Run on Mondays", Monday);
                 JobQueueEntry.Validate("Run on Tuesdays", Tuesday);
                 JobQueueEntry.Validate("Run on Wednesdays", Wednesday);
@@ -76,7 +77,6 @@ codeunit 50100 "ENVHUB Schedule Export"
                 JobQueueEntry.Validate("Run on Fridays", Friday);
                 JobQueueEntry.Validate("Run on Saturdays", Saturday);
                 JobQueueEntry.Validate("Run on Sundays", Sunday);
-                JobQueueEntry."No. of Minutes between Runs" := MinBetweenRuns;
             end;
 
             if (TimeToRun <> 0DT) then
