@@ -13,7 +13,7 @@ codeunit 50101 "ENVHUB Http"
         ResponseMessage: HttpResponseMessage;
         JsonResponse: JsonObject;
         [NonDebuggable]
-        AccessToken: Text;
+        AccessToken: SecretText;
         JsonContent: Text;
         Content: HttpContent;
         ContentHeaders: HttpHeaders;
@@ -31,7 +31,7 @@ codeunit 50101 "ENVHUB Http"
             RequestMessage.Content(Content);
         end;
 
-        Client.DefaultRequestHeaders().Add('Authorization', StrSubstNo('Bearer %1', AccessToken));
+        Client.DefaultRequestHeaders().Add('Authorization', SecretStrSubstNo('Bearer %1', AccessToken));
         Client.DefaultRequestHeaders().Add('Accept', 'application/json');
 
         if Client.Send(RequestMessage, ResponseMessage) then begin
@@ -44,12 +44,12 @@ codeunit 50101 "ENVHUB Http"
     end;
 
     [NonDebuggable]
-    local procedure GetAccessToken(): Text
+    local procedure GetAccessToken(): SecretText
     var
         OAuth2: Codeunit OAuth2;
         Credentials: Codeunit "ENVHUB Credentials";
         Setup: Record "ENVHUB Setup";
-        AccessToken: Text;
+        AccessToken: SecretText;
         AuthCodeError: Text;
         Scopes: List of [Text];
         UrlLbl: label 'https://login.microsoftonline.com/%1/oauth2/v2.0/token', comment = '%1 = tenant ID';
@@ -68,7 +68,7 @@ codeunit 50101 "ENVHUB Http"
             Scopes,
             AccessToken);
 
-        if (AccessToken = '') or (AuthCodeError <> '') then
+        if (AccessToken.IsEmpty()) or (AuthCodeError <> '') then
             Error(AuthCodeError);
 
         exit(AccessToken);
